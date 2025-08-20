@@ -1,0 +1,129 @@
+<div class="pageheader">
+  <h1>AP Floor Plan</h1>
+  <div>
+    <button
+      mat-raised-button
+      color="primary"
+      class="float-right"
+      (click)="openFloorApModal(addEditFloorPlanModal)"
+    >
+      <mat-icon>add</mat-icon>
+      <Nav>New Floor Plan</Nav>
+    </button>
+  </div>
+</div>
+
+<ng-template #addEditFloorPlanModal let-modal>
+  <div class="modal-header fpconfig">
+    <h4 class="modal-title">Floor Plan</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="col-2 col-md-2 col-lg-2 col-xxl-2">
+    <div class="d-flex my-2">
+      <img [src]="selectedImageUrl" alt="Preview" class="img-fluid" />
+    </div>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card mb-8">
+          <form
+            [formGroup]="form"
+            (ngSubmit)="saveFloorPlanDetails()"
+            class="p-3"
+          >
+            <div class="card-body">
+              <formly-form
+                [form]="form"
+                [fields]="formFields"
+                [model]="formModel"
+                [options]="formOptions"
+              >
+              </formly-form>
+
+              <div
+                class="col-md-12 mt-2 d-flex align-items-center justify-content-end"
+              >
+                <button
+                  type="button"
+                  class="btn btn-secondary mx-1"
+                  (click)="modal.dismiss('Cross click')"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  type="submit"
+                  class="btn btn-success mx-1"
+                  [disabled]="!form.valid"
+                >
+                  {{ isEditMode ? "Update" : "Add" }}
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<!-- ------------------------------------------------- Reset Password Modal ----------------------------------------- -->
+<ng-template #View_Floor_Plan_modal let-modal>
+  <form>
+    <div class="modal-header d-flex justify-content-between align-items-center">
+      <h4 class="modal-title m-0" id="modal-basic-title">View Floor Plan</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-outline-secondary"
+        (click)="modal.dismiss('cancel')"
+      >
+        MANAGE PIN
+      </button>
+      <button type="button" class="btn btn-success">Save</button>
+    </div>
+
+    <div class="col-lg-2 col-xxl-2">
+      <div class="d-flex my-2">
+        <img [src]="selectedImageUrl" alt="Preview" class="img-fluid" />
+      </div>
+    </div>
+  </form>
+</ng-template>
+
+<!-- ------------------------------------------------- App Table ----------------------------------------- -->
+<div class="row">
+  <app-table
+    [dataSize]="dataSize"
+    [rowCheckbox]="enableCheckbox"
+    [tableHeaders]="displayedColumns"
+    [tableButtons]="tableButtons"
+    [tableData]="dataSource"
+    (eventEmitRecordOperation)="triggerRecordOperation($event)"
+  ></app-table>
+</div>
+
+<!-- No Records Message -->
+
+@if (dataSource.length ===0) {
+<div class="alert alert-warning text-center fs-5">No Record Found...</div>
+}

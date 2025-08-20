@@ -1,0 +1,113 @@
+.modal-body {
+    max-height: calc(100vh - 250px) !important;
+    overflow: auto !important;
+  }
+  
+  form .form-group {
+    margin-bottom: 0 !important;
+    min-height: 85px !important;
+  }
+  
+  .form-control {
+    width: 93% !important;
+  }
+  
+  .btn.btn-xs.btn-secondary.btn-add {
+    padding: 8px 5px !important;
+    font-size: 11px !important;
+    border-color: #ccc !important;
+  }
+  
+  //-------------------------------
+  
+  //---------Form CSS------------
+  .form-control {
+    font-size: 12px;
+    margin-left: 0px !important;
+  }
+  
+  .form-group label {
+    // font-size: 13px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #13051f;
+  }
+  
+  //-----------------
+  
+  h5 {
+    font-size: 13px;
+    font-weight: 700;
+  }
+  
+  ul.company-dropdown {
+    z-index: 1;
+    position: absolute;
+    // width: 320px;
+    width: 100%; //updated by Nupur 19082024
+    border: 1px solid #ebebeb;
+    // padding: 10px;
+    padding: 0px 10px;
+    /*updated by Nupur: 08/02/2024*/
+    border-radius: 5px;
+    height: 200px;
+    overflow-y: auto;
+    background-color: #efeeee;
+    box-shadow: 2px 2px 10px #69696963;
+    list-style: none;
+    margin-top: 1px;
+  }
+  
+  ul.company-dropdown li:hover {
+    color: #42168f;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  
+  .input-group-prepend:hover {
+    .input-group-text {
+      color: red;
+    }
+  }
+  
+  .dropdown {
+    text-align: left;
+    color: black;
+    // width: 318px !important;
+    width: 100%; //updated by Nupur _ 19082024
+    text-transform: none !important;
+    border-radius: 5px;
+    background-color: transparent;
+    border: 1px solid #aaaaaa;
+  }
+  
+  // .dropdown:hover {
+  //   background-color: #53406b;
+  //   color: #fff;
+  //   border: 1px solid #53406b;
+  // }
+  
+  // button:hover .fa {
+  //   color: #fff !important;
+  // }
+  
+  .drdw-search {
+    position: sticky;
+    top: 0px;
+  }
+  
+  input {
+    border: none;
+    display: inline;
+    background-color: transparent !important;
+  }
+  
+  .angle {
+    margin-top: 8px;
+    margin-right: 8px;
+  }
+  
+  .form-control:focus {
+    border-color: none !important;
+    box-shadow: none;
+  }

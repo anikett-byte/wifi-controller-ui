@@ -1,0 +1,24 @@
+
+<mat-drawer-container class="mainWrapper vh-100" autosize>
+  <mat-drawer #drawer class="example-sidenav" mode="over">
+    <p>Auto-resizing sidenav</p>
+    @if (showFiller) {
+      <p>Lorem, ipsum dolor sit amet consectetur.</p>
+    }
+    <button (click)="showFiller = !showFiller" matButton="elevated">
+      Toggle extra text
+    </button>
+  </mat-drawer>
+ <app-horizontal-navigation></app-horizontal-navigation>
+    <mat-sidenav-content class="contentWrapper" #content>
+      <main class="pageWrapper">
+       
+        <!-- <app-breadcrumb></app-breadcrumb> -->
+        <router-outlet></router-outlet>
+      </main>
+    </mat-sidenav-content>
+
+</mat-drawer-container>
+
+
+

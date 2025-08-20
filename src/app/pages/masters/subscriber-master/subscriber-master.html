@@ -1,0 +1,240 @@
+<div class="pageheader">
+  <h1>Subscriber Master</h1>
+  <div>
+    <button mat-raised-button color="primary" class="float-right"
+      (click)="openSubscriberDetailsModal(addEditSubscribeModal)">
+      <mat-icon>add</mat-icon>
+      Add Subscriber
+    </button>
+  </div>
+</div>
+
+<!-- <ng-template #addEditSubscribeModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Subscriber Master</h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="">
+        <form
+          [formGroup]="form"
+          (ngSubmit)="saveSubscribeDetails()"
+          class="p-3"
+        >
+          <formly-form
+            [form]="form"
+            [fields]="formFields"
+            [model]="formModel"
+            [options]="formOptions"
+          >
+          </formly-form>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="modal.close('Close click')"
+            >
+              Close
+            </button>
+
+            <button
+              type="submit"
+              class="btn btn-success mx-1"
+              [disabled]="!form.valid"
+            >
+              {{ isEditMode ? "Update" : "Submit" }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</ng-template> -->
+
+<!-- No Records Message -->
+@if (dataSource.length === 0) {
+<div class="alert alert-warning text-center fs-5">No Record Found...</div>
+
+}
+
+<!-- ------------------------------------ Content Group Enable/Disable ------------------------------------------- -->
+
+
+<div class="row">
+  <app-table [dataSize]="dataSize" [tableHeaders]="displayedColumns" [tableButtons]="tableButtons"
+    [tableData]="dataSource" (eventEmitRecordOperation)="triggerRecordOperation($event)"></app-table>
+</div>
+
+
+
+<ng-template #addEditSubscribeModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Subscriber Master</h4>
+    <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="saveSubscribeDetails()" class="row g-3">
+    <div class="modal-body">
+
+      <!-- User Details -->
+      <div class="col-md-3">
+        <div class="col-md-6">
+          <label class="d-block">User Type <span class="text-danger">*</span></label>
+
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" formControlName="usertype" value="PPPoE" id="utPPPoE" />
+            <label class="form-check-label" for="utPPPoE">PPPoE</label>
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" formControlName="usertype" value="IPoE" id="utIPoE" />
+            <label class="form-check-label" for="utIPoE">IPoE</label>
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" formControlName="usertype" value="MAC" id="utMAC" />
+            <label class="form-check-label" for="utMAC">MAC</label>
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" formControlName="usertype" value="Hotspot" id="utHotspot" />
+            <label class="form-check-label" for="utHotspot">Hotspot</label>
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" formControlName="usertype" value="BYOD" id="utBYOD" />
+            <label class="form-check-label" for="utBYOD">BYOD</label>
+          </div>
+
+          @if (form.controls['usertype'].errors?.['required'] && form.controls['usertype'].touched) {
+          <div class="text-danger mt-1 small">
+            User Type is required
+          </div>
+          }
+        </div>
+
+
+        <div class="col-md-3">
+          <label>Username</label>
+          <input type="text" class="form-control" formControlName="username" />
+        </div>
+
+        <div class="col-md-3">
+          <label>Password</label>
+          <input type="password" class="form-control" formControlName="spassword" />
+        </div>
+
+        <div class="col-md-3">
+          <label>Confirm Password</label>
+          <input type="password" class="form-control" formControlName="confirmpassword" />
+        </div>
+
+
+        <div class="col-md-3">
+          <label>
+            IP Address
+            @if (form.get('usertype')?.value === 'IPoE') {
+            <span class="text-danger">*</span>
+            }
+          </label>
+          <input type="text" formControlName="ipaddress" class="form-control" />
+          @if(form.get('usertype')?.value === 'IPoE'
+          && form.get('ipaddress')?.touched
+          && form.get('ipaddress')?.hasError('required')) {
+          <div class="text-danger">
+            IP Address is required for IPOE.
+          </div>
+          }
+        </div>
+
+        <!-- Dynamic MAC Addresses -->
+        <div class="col-md-3">
+          <label>MAC Address (Default)</label>
+          <input type="text" class="form-control" formControlName="macaddress_default" />
+        </div>
+
+        <div formArrayName="macaddresses" class="row">
+          <div *ngFor="let ctrl of macaddresses.controls; let i=index" class="col-md-3 d-flex align-items-center mt-2">
+            <input [formControlName]="i" class="form-control me-2" placeholder="MAC Address {{i+2}}" />
+            <button type="button" class="btn btn-danger btn-sm" (click)="removeMacAddress(i)">
+              <i class="fa fa-trash"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="col-md-12 mt-2">
+          <button type="button" class="btn btn-primary btn-sm" (click)="addMacAddress()">
+            + Add MAC Address
+          </button>
+        </div>
+
+        <!-- Other Fields -->
+        <div class="col-md-3">
+          <label>User Count</label>
+          <input type="number" class="form-control" formControlName="usercount" />
+        </div>
+
+        <div class="col-md-3">
+          <label>First Name</label>
+          <input type="text" class="form-control" formControlName="firstname" />
+        </div>
+
+        <div class="col-md-3">
+          <label>Last Name</label>
+          <input type="text" class="form-control" formControlName="lastname" />
+        </div>
+
+        <div class="col-md-3">
+          <label>Contact No</label>
+          <input type="text" class="form-control" formControlName="contactno" />
+        </div>
+
+        <div class="col-md-3">
+          <label>Address</label>
+          <textarea class="form-control" formControlName="address"></textarea>
+        </div>
+
+        <div class="col-md-3">
+          <label>Pincode</label>
+          <input type="number" class="form-control" formControlName="pincode" />
+        </div>
+
+        <div class="col-md-3">
+          <label>Simultaneous Use</label>
+          <input type="number" class="form-control" formControlName="simultanouse_use" />
+        </div>
+
+        <div class="col-md-3">
+          <label>Select Package</label>
+          <select class="form-select" formControlName="package">
+            <option *ngFor="let p of packageList" [value]="p.packagename">{{ p.packagename }}</option>
+          </select>
+        </div>
+
+        <div class="col-md-3">
+          <label>Amount</label>
+          <input type="number" class="form-control" formControlName="amount" />
+        </div>
+
+        <div class="col-md-3">
+          <label>Package Expiry</label>
+          <input type="date" class="form-control" formControlName="packageexpiry" />
+        </div>
+
+        <!-- Footer -->
+        <div class="modal-footer mt-3">
+          <button type="button" class="btn btn-secondary" (click)="modal.close()">Close</button>
+          <button type="submit" class="btn btn-success mx-1" [disabled]="form.invalid">
+            {{ isEditMode ? "Update" : "Submit" }}
+          </button>
+        </div>
+      </div>
+  </form>
+</ng-template>

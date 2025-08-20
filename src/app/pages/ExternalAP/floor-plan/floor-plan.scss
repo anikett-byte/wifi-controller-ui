@@ -1,0 +1,40 @@
+.bgImg {
+  position: relative;
+
+  img {
+    position: absolute;
+  }
+}
+
+.fpconfig {
+  background: #d9c6eb; //#62319d;
+  // border-bottom: 2px solid #663399 ;
+}
+
+
+.btn-add {
+  position: absolute;
+  right: 35px;
+  top: 30px;
+}
+
+.popup-overlay {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  z-index: 999999999999999999999;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 25%;
+
+  .form-container-popup {
+    background: #fff;
+    padding: 20px;
+    border-radius: 3px;
+    box-shadow: 0px 0px 60px #0000009c;
+  }
+}
+
+

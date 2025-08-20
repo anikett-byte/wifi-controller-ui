@@ -1,0 +1,79 @@
+<!-- <p>device-list works!</p> -->
+
+ <div class="row">
+    <div class="col-12">
+        <h1>Device List</h1>
+    </div>
+</div>
+
+<div class="row my-2">
+    <div class="col-md-12 text-end">        
+        <button class="btn btn-primary mx-1" (click)="reset()">RESET</button>
+        <button class="btn btn-primary mx-1" (click)="reboot()">REBOOT</button>
+        <button class="btn btn-primary mx-1" (click)="refresh()">REFRESH</button>
+    </div>
+</div>
+
+<div class="row">
+    <app-table [dataSize]="dataSize" [rowCheckbox]="enableCheckbox" [tableHeaders]="displayedColumns"  
+        [tableButtons]="tableButtons" [tableData]="dataSource" (rowSelectionEventEmit)="getSelectedRows($event)" 
+        (eventEmitPageRecord)="getTableData($event)" (eventEmitRecordOperation)="triggerRecordOperation($event)" >        
+    </app-table>    
+</div> 
+
+<ng-template #content let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title">Connected Users</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+    <div class="modal-body">
+            <div class="row">
+                <app-table [dataSize]="connectedDataSize" [rowCheckbox]="enableConnectedUserCheckbox" [tableHeaders]="connctedUsersColumns"  
+                    [tableButtons]="connectedTableButtons" [tableData]="connectedDataSource" (rowSelectionEventEmit)="getSelectedRows($event)" 
+                    (eventEmitPageRecord)="getTableData($event)" (eventEmitRecordOperation)="triggerRecordOperation($event)" >        
+                </app-table>    
+            </div>
+    </div>
+</ng-template> 
+
+<ng-template #contentUpdateLoc let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title">Update AP Location</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-12 col-md-12 col-lg-12 col-xxl-12">
+                <form [formGroup]="form" (ngSubmit)="updateAPLocation()" class="p-3">
+                    <formly-form
+                        [form]="form"
+                        [fields]="formFields"
+                        [model]="formModel"
+                        [options]="formOptions">
+                    </formly-form>
+                    <div class="modal-footer">
+                        <!-- [disabled]="!form.valid"-->                        
+                        <button type="submit" class="btn btn-success mx-1" >Update</button>
+                        <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
+                    </div>
+                </form>                                
+            </div>
+        </div>
+    </div>
+</ng-template>    
+
+<ng-template #modalConfirmDelete let-modal>
+    <div class="modal-header">
+        <p><strong>Are you sure you want to DELETE? </strong></p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn cancel_btn"
+            (click)="modal.dismiss('cancel')">Cancel</button>
+        <button type="button" ngbAutofocus class="btn add_btn float-right" (click)="modal.close('Ok')">Ok</button>
+    </div>
+</ng-template>
+
+
+
+
+

@@ -1,0 +1,18 @@
+.drag-block {
+    width: 30px;
+    height: 30px;
+    background-color:cyan;
+    color: green;
+    text-align: center;
+}
+._nghost-c7{
+  background-color: red;
+
+}
+.ng-draggable {
+    cursor: grab;
+  }
+   
+  .ng-dragging {
+    cursor: grabbing;
+  }

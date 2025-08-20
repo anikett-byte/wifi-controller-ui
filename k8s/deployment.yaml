@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wifi-ui-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: wifi-ui
+  template:
+    metadata:
+      labels:
+        app: wifi-ui
+    spec:
+      containers:
+      - name: wifi-ui
+        image: anikettevare/wifi-ui:latest   # replace with your DockerHub repo
+        ports:
+        - containerPort: 80
+        imagePullPolicy: Always

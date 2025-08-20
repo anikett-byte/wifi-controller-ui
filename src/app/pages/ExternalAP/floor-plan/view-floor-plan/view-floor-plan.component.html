@@ -1,0 +1,183 @@
+<!-- <div class="modal-header">
+  <h4 class="modal-title" id="modal-title">View Floor Plan</h4>
+  <button
+    type="button"
+    class="close"
+    aria-label="Close button"
+    aria-describedby="modal-title"
+    (click)="close()"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <div class="">
+    <div class="card">
+      <div class="card-header">
+        <div class="col-md-12 mb-2 text-right">
+          <button class="btn secdary_btn mr-3" (click)="openModel(managePin)">
+            Manage PIN
+          </button>
+          <button class="btn update_btn" (click)="saveFloorPlanAp()">
+            Save
+          </button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="drag-boundary" #myBounds>
+          <img class="floor-plan-image" [src]="fpImageUrl" alt="" />
+          <p class="label">#myBounds</p>
+          <div
+            style="position: absolute"
+            *ngFor="let position of pins; index as i"
+            ngDraggable
+            class="drag-block"
+            (edge)="checkEdge($event)"
+            [bounds]="myBounds"
+            [inBounds]="inBounds"
+            (started)="onStart($event)"
+            (stopped)="onStop($event)"
+            (endOffset)="onMoveEnd($event, position)"
+            [position]="{ x: position.left, y: position.top }"
+            [preventDefaultEvent]="true"
+          >
+            <span class="removeAp" (click)="apAction(position)">X</span>
+            <div class="marker-container">
+              <img
+                *ngIf="position.status == 'ONLINE'"
+                class="floor-marker"
+                src="./assets/images/Green-Marker.gif"
+                (click)="showApConfig(position.apid)"
+                alt=""
+              />
+              <img
+                *ngIf="position.status == 'OFFLINE'"
+                class="floor-marker"
+                src="./assets/images/Red-Marker.gif"
+                (click)="showApConfig(position.apid)"
+                alt=""
+              />
+              <img
+                *ngIf="position.status == 'ALERT'"
+                class="floor-marker"
+                src="./assets/images/Yellow-Marker.gif"
+                (click)="showApConfig(position.apid)"
+                alt=""
+              />
+              <div class="apDetails">
+                <p class="m-0"><b>AP Name :- </b>{{ position.ap_name }}</p>
+                <p class="m-0"><b>Mac :- </b>{{ position.mac }}</p>
+                <p class="m-0"><b>Uptime :- </b>{{ position.uptime }}</p>
+                <p class="m-0"><b>Upload :- </b>{{ position.upload }}</p>
+                <p class="m-0"><b>Download :- </b>{{ position.download }}</p>
+                <p class="m-0">
+                  <b>Live users :- </b>{{ position.user_count }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #managePin let-modal>
+  <div class="modal-header fpconfig">
+    <h4 class="modal-title" id="modal-basic-title">Manage Pins</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body mb-2">
+    <form [formGroup]="managePinForm" (submit)="showData()">
+      <div class="col-md-12">
+        <div class="card mb-8">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-12 form-group mb-12">
+                <label for="floorPlanName">Floor Plan Name</label>
+                <input
+                  [ngClass]="{
+                    'is-invalid':
+                      details.floorPlanName.errors &&
+                      (details.floorPlanName.dirty ||
+                        details.floorPlanName.touched)
+                  }"
+                  type="text"
+                  class="form-control"
+                  formControlName="floorPlanName"
+                  id="floorPlanName"
+                  minlength="2"
+                  maxlength="25"
+                  placeholder="Floor Plan Name"
+                  [value]=""
+                />
+
+                <div
+                  *ngFor="let validation of validationMessage.floorPlanName"
+                  class="invalid-feedback"
+                >
+                  <div
+                    *ngIf="
+                      managePinForm
+                        .get('floorPlanName')
+                        .hasError(validation.type) &&
+                      (managePinForm.get('floorPlanName').dirty ||
+                        managePinForm.get('floorPlanName').touched)
+                    "
+                  >
+                    {{ validation.message }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 form-group mb-12">
+                <label for="device">Device List</label>
+                <ng-multiselect-dropdown
+                  formControlName="DDdeviceListId"
+                  [placeholder]="'-- Select Device --'"
+                  [data]="availableDeviceList"
+                  [(ngModel)]="selectedItems"
+                  [settings]="dropdownSettings"
+                  (onSelect)="onItemSelect($event)"
+                  (onSelectAll)="onSelectAll($event)"
+                >
+                </ng-multiselect-dropdown>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mt-2">
+        <button
+          type="submit"
+          class="btn-space btn btn-primary float-right"
+          (click)="addAp(); modal.dismiss('Cross click')"
+        >
+          Add Ap
+        </button>
+        <button
+          class="btn btn-primary float-right btn-space"
+          (click)="modal.dismiss('Cross click')"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+<ng-template #tipContent>
+  <button *ngIf="!showDelete" type="button" (click)="removeAp()">Remove</button>
+  <button *ngIf="showDelete" type="button" (click)="deleteAp()">Delete</button>
+  <br />Mac : {{ apMac }}
+  <br />
+  Product name : {{ apName }}
+</ng-template> -->

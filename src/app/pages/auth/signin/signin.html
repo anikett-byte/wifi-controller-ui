@@ -1,0 +1,28 @@
+ <div class="container-fluid vh-100 overflow-hidden video-background-container">
+    <video autoplay muted loop playsinline class="video-background">
+    <source src="sliders/login.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+    <div class="d-flex justify-content-end align-items-end">
+      <!-- <div class="col-12 col-xs-12 col-md-6 col-lg-8 col-xl-8">
+        <div class="d-flex justify-content-center vh-100">
+            <img src="sliders/tplink.jpg" alt="Los Angeles" class="d-flex">
+        </div>
+      </div> -->
+      <div class="col-12 col-xs-12 col-md-6 col-lg-5 col-xl-5">
+        
+          <div class="d-flex justify-content-center align-items-center vh-100 border-start shadow-lg bg-light">
+            <form [formGroup]="signinForm" (ngSubmit)="onSubmit()" class="w-75">
+              <formly-form [form]="signinForm" [fields]="fields" [model]="model"></formly-form>
+              <button type="submit" class="btn btn-primary btn-block w-100" [disabled]="!signinForm.valid">
+                Submit
+              </button>
+            </form>
+         
+        </div>
+      </div>
+    
+  </div>
+  </div> 
+
+ 

@@ -1,0 +1,24 @@
+.video-background-container {
+  position: relative;
+}
+.video-background {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  z-index: 0;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  opacity: 0.7; /* Optional: Add opacity for dark/light effect */
+}
+
+.video-content {
+  position: relative;
+  z-index: 1;
+  color: white;
+  text-align: center;
+  padding-top: 20%;
+}

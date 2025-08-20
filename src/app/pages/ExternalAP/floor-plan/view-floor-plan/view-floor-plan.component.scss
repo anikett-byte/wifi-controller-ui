@@ -1,0 +1,139 @@
+#_ngcontent-c1 {
+  background-image: "assets/images/photo-wide-4.jpg"
+}
+
+.drag-boundary {
+  width: 100%;
+  height: 500px;
+  // background-color: burlywood;
+  background-color: #fff; //updated by Nupur:22/08/2022
+  position: relative;
+
+  .floor-plan-image {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    max-width: 724px; //updated by Nupur:22/08/2022
+  }
+}
+
+#div1,
+#div2 {
+  background-color: burlywood;
+  float: left;
+  width: 100px;
+  height: 35px;
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid rgb(0, 0, 0);
+}
+
+.bgImg {
+  position: relative;
+
+  img {
+    position: absolute;
+  }
+}
+
+.btn-space {
+  margin-right: 10px;
+}
+
+
+
+
+
+
+
+
+.drag-block {
+  width: 40px;
+  height: 40px;
+  color: black;
+  //text-align: center;
+  padding: 5px;
+
+  .removeAp {
+    position: absolute;
+    font-size: 12px;
+    top: -8px;
+    right: -6px;
+    font-weight: 700;
+    display: none;
+    cursor: pointer;
+  }
+
+  .apDetails {
+    background: #00000073;
+    color: white;
+    position: absolute;
+    bottom: -143px;
+    padding: 10px;
+    border-radius: 5px;
+    display: none;
+    left: 13px;
+    width: max-content;
+  }
+
+  .marker-container {
+    cursor: pointer;
+  }
+
+  .floor-marker {
+    z-index: 9999999999999;
+    //position: absolute;
+    left: 0;
+  }
+
+  .floor-marker:hover+.apDetails {
+    display: block;
+  }
+}
+
+.drag-block:hover {
+
+  .removeAp {
+    display: unset;
+  }
+}
+
+._nghost-c7 {
+  background-color: red;
+
+}
+
+.ng-draggable {
+  cursor: grab;
+}
+
+.ng-dragging {
+  cursor: grabbing;
+}
+
+.fpconfig {
+  background: #d9c6eb; //#62319d;
+  // border-bottom: 2px solid #663399 ;
+}
+
+
+
+agm-map {
+  height: 400px;
+  /* height is required */
+}
+
+.ful-screen-btn,
+.ful-screen-btn:active,
+.ful-screen-btn:focus {
+  background: none !important;
+  border: none;
+  color: #000 !important;
+  padding: 9px;
+  position: absolute;
+  display: inline-block;
+  font-size: 15px;
+  right: 45px;
+  top: 7px;
+  box-shadow: none !important;
+}

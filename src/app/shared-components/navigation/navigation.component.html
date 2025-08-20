@@ -1,0 +1,12 @@
+<mat-accordion>
+    <mat-expansion-panel  *ngFor="let _menu of dataSet" [hideToggle]="_menu.type=='link'" [disabled]="_menu.type=='link'">
+      <mat-expansion-panel-header class="text-dark" (click)="_menu.type=='link'?navigateToURL(_menu):''">
+        <mat-panel-title class="text-dark">
+            <i class="fa {{_menu.icon}}"></i>&nbsp;
+            {{_menu.name}}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <app-navigation [dataSet]="_menu.children"></app-navigation>
+    </mat-expansion-panel>
+  </mat-accordion>
+  

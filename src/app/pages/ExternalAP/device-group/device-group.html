@@ -1,0 +1,187 @@
+<div class="row">
+    <div class="col-12">
+        <h1>AP Device Group</h1>
+    </div>
+</div>
+
+<div class="row my-2">
+    <div class="col-md-12 text-end">        
+        <button class="btn btn-primary" (click)="openAddDeviceGroup()">ADD NEW DEVICE GROUP</button>
+    </div>
+</div>
+
+<div class="row">
+    <app-table [dataSize]="dataSize" [rowCheckbox]="enableCheckbox" [tableHeaders]="displayedColumns"  
+        [tableButtons]="tableButtons" [tableData]="dataSource" (rowSelectionEventEmit)="getSelectedRows($event)" 
+        (eventEmitPageRecord)="getTableData($event)" (eventEmitRecordOperation)="triggerRecordOperation($event)" >        
+    </app-table>    
+</div>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+		<h4 class="modal-title" *ngIf="!isEditMode">Add AP Device Group</h4>
+        <h4 class="modal-title" *ngIf="isEditMode">Update AP Device Group</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>        
+	</div>
+    <div class="modal-body">
+        <form [formGroup]="userForm">
+        <div class="row">   
+        <div>
+                <div class="col-md-4 form-group mb-3">
+                    <label>WLAN Group Name:</label>
+                    <input formControlName="wlangroupname" class="form-control"/>
+                </div>
+        </div>
+        <div>
+                <div class="col-md-4 form-group mb-3">
+                    <label>Device List:</label>
+                    <select formControlName="devicelist" class="form-control">
+                            <option value="">-- Select Device--</option>
+                            <option *ngFor="let s of deviceList" [value]="s.apid">{{ s.gw_id }}</option>
+                    </select>
+                  
+                </div>
+        </div>
+        <div>
+                <div class="col-md-4 form-group mb-3">
+                    <label>Device Type:</label>
+                    <label><input type="radio" formControlName="type" value="Single"  /> Single</label>
+                    <label><input type="radio" formControlName="type" value="Dual" /> Dual</label>
+                </div>
+        </div>
+            <div id="SINGLE" *ngIf="selectedType === 'Single'">
+                <h4> SINGLE AP Configuration</h4>
+                <form [formGroup]="mainForm">
+                    <div class="row">
+                    <div formArrayName="formSections">
+                        <div *ngFor="let section of formSections.controls; let i = index" [formGroupName]="i" style="margin-bottom: 1rem; border: 1px solid #ccc; padding: 10px;">
+                        
+                            <div class="col-md-6 form-group mb-3">
+                                <label>Status:</label>
+                                <select formControlName="status" class="form-control">
+                                    <option value="">-- Select --</option>
+                                    <option *ngFor="let s of status" [ngValue]="s.key">{{s.value}}</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 form-group mb-3">
+                                <label>SSID:</label>
+                                <input class="form-control" type="text" formControlName="ssid" />
+                            </div>
+
+                            <div class="col-md-6 form-group mb-3">
+                                <label>VLANID:</label>
+                                <input class="form-control" type="text" formControlName="vlanid" />
+                            </div>
+
+                            <div class="col-md-6 form-group mb-3">
+                                <label>Wireless Security:</label>
+                                <select formControlName="wirelesssecurity" class="form-control">
+                                    <option value="">-- Select --</option>
+                                    <option *ngFor="let s of w_security" [ngValue]="s.key">{{s.value}}</option>
+                                </select>
+                            </div>    
+
+                            <div class="col-md-6 form-group mb-3">
+                                <label>PSK KEY:</label>
+                                <input class="form-control" type="text" formControlName="pskkey" />
+                            </div>
+                            
+                            <div class="col-md-6 form-group mb-3">
+                                <label>Hide SSID:</label>
+                                <select formControlName="hidessid" class="form-control">
+                                    <option value="">-- Select --</option>
+                                    <option *ngFor="let h of h_ssid" [ngValue]="h.key">{{h.value}}</option>
+                                </select>
+                            </div> 
+                        </div>
+                    </div>
+                    </div>      
+                </form>
+            </div>
+            <div id="DUAL" *ngIf="selectedType === 'Dual'">
+                <h4> DUAL AP Configuration</h4>
+                <form [formGroup]="mainForm">
+                    <div class="row">
+                    <div formArrayName="formSections">
+                        <div *ngFor="let section of formSections.controls; let i = index" [formGroupName]="i" style="margin-bottom: 1rem; border: 1px solid #ccc; padding: 10px;">          
+                            <div class="col-md-6 form-group mb-3">
+                                <label>Status:</label>
+                                <select formControlName="status" class="form-control">
+                                    <option value="">-- Select --</option>
+                                    <option *ngFor="let s of status" [ngValue]="s.key">{{s.value}}</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 form-group mb-3">
+                                <label>SSID:</label>
+                                <input class="form-control" type="text" formControlName="ssid" />
+                            </div>
+
+                            <div class="col-md-6 form-group mb-3">
+                                <label>VLANID:</label>
+                                <input class="form-control" type="text" formControlName="vlanid" />
+                            </div>
+
+                            <div class="col-md-6 form-group mb-3">
+                                <label>Wireless Security:</label>
+                                <select formControlName="wirelesssecurity" class="form-control">
+                                    <option value="">-- Select --</option>
+                                    <option *ngFor="let s of w_security" [ngValue]="s.key">{{s.value}}</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 form-group mb-3">
+                                <label>PSK KEY:</label>
+                                <input class="form-control" type="text" formControlName="pskkey" />
+                            </div>
+
+                            <div class="col-md-6 form-group mb-3">
+                                <label>Hide SSID:</label>
+                                <select formControlName="hidessid" class="form-control">
+                                    <option value="">-- Select --</option>
+                                    <option *ngFor="let h of h_ssid" [ngValue]="h.key">{{h.value}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    </div>                
+                </form>
+            </div>
+                <div class="row">
+                    <div class="col-md-6 form-group mb-3">
+                        <button type="button" class="btn btn-primary mx-1" (click)="addForm()"> Add New Configuration</button> <br /><br />
+                    </div>
+                </div>
+            <div class="col-md-4 form-group mb-3">
+                    <button type="submit" *ngIf="!isEditMode" class="btn btn-primary mx-1" (click)="saveData()">Submit</button>
+                    <button type="submit" *ngIf="isEditMode" class="btn btn-primary mx-1" (click)="saveData()">Update</button>
+                    <button type="button" class="btn btn-primary mx-1" (click)="resetForm()">Reset</button>
+            </div>    
+        </div>   
+        </form>
+    </div>
+</ng-template>
+
+<!-- View AP List-->
+<ng-template #contentVIEWAP let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title">AP List</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+    <div class="modal-body">
+        <div class="row">
+            <app-table [dataSize]="viewAPdataSize" [rowCheckbox]="enableCheckbox" [tableHeaders]="displayedColumns"  
+            [tableButtons]="tableButtons" [tableData]="viewAPdataSource" (rowSelectionEventEmit)="getSelectedRows($event)" 
+            (eventEmitPageRecord)="getTableData($event)" (eventEmitRecordOperation)="triggerRecordOperation($event)" >        
+            </app-table>
+        </div>
+    </div>
+</ng-template>
+
+
+
+
+
+
+

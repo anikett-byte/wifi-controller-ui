@@ -1,0 +1,47 @@
+<div class="pageheader">
+  <h1>Company</h1>
+  <div>
+    <button mat-raised-button color="primary" class="float-right" (click)="openCompanyDetailsModal(content)">
+      <mat-icon>add</mat-icon>
+      Company
+    </button>
+  </div>
+</div>
+
+
+<div class="row">
+  <app-table [dataSize]="dataSize" [rowCheckbox]="enableCheckbox" [tableHeaders]="displayedColumns"
+    [tableButtons]="tableButtons" [tableData]="dataSource" (rowSelectionEventEmit)="getSelectedRows($event)"
+    (eventEmitPageRecord)="getTableData($event)"
+    (eventEmitRecordOperation)="triggerRecordOperation($event)"></app-table>
+</div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Comapny Details</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-2 col-md-2 col-lg-2 col-xxl-2">
+        <div class="d-flex my-5">
+          <img [src]="selectedImageUrl" alt="Preview" class="img-fluid" />
+        </div>
+      </div>
+      <div class="col-10 col-md-10 col-lg-10 col-xxl-10">
+        <form [formGroup]="form" (ngSubmit)="saveCompanyDetails()" class="p-3">
+          <formly-form [form]="form" [fields]="formFields" [model]="formModel" [options]="formOptions">
+          </formly-form>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success mx-1" [disabled]="!form.valid">
+              Submit
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">
+              Close
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</ng-template>

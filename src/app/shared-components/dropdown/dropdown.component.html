@@ -1,0 +1,25 @@
+
+
+<div class="form-group">
+    <label>{{setting.label}}<sup class="text-danger">*</sup></label><br />
+    <div class="dropdown">
+      <input class="form-control" type="text" (click)="showHideList()" [value]="selectedOption" id="dropdown"
+        name="companyName" required readonly>
+      <span class="angle" (click)="showHideList()"
+        [ngClass]="show ? 'fa fa-angle-up float-right text-primary fa-lg':'fa fa-angle-down float-right text-primary fa-lg'">
+      </span>
+      <ul class="-list-unstyled company-dropdown" name="client" *ngIf="show" id="dropdown-ul">
+        <input type="text" id="search" class="form-control" placeholder="Search"
+          (input)="searchCompany($event.target)"
+          style="position: sticky; top: 0px; background-color: white !important;">
+        <li (click)="showMsg()">--Select--</li>
+        <li style="cursor: pointer;" *ngFor="let option of data" [ngStyle]="{'margin-left': option.level+'em'}"
+          id="option" value="{{option[setting.id]}}" (click)="select(option[setting.id],option[setting.textField])">
+          {{option[setting.textField]}}
+        </li>
+      </ul>
+    </div>
+    <div *ngIf="errMsg" class="text-danger" style="width: max-content;">
+      {{setting.label}} is required
+    </div>
+  </div>

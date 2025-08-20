@@ -1,0 +1,79 @@
+<div class="pageheader">
+  <h1>Orchestrator Mapping</h1>
+  <div>
+    <button
+      mat-raised-button
+      color="primary"
+      class="float-right"
+      (click)="openFirmwareDetailsModal(addEditOrchestratorModal)"
+    >
+      <mat-icon>add</mat-icon>
+      <Nav>Orchestrator</Nav>
+    </button>
+  </div>
+</div>
+
+<div class="row">
+  <app-table
+    [dataSize]="dataSize"
+    [tableHeaders]="displayedColumns"
+    [tableButtons]="tableButtons"
+    [tableData]="dataSource"
+    (rowSelectionEventEmit)="getSelectedRows($event)"
+    (eventEmitPageRecord)="getTableData($event)"
+    (eventEmitRecordOperation)="triggerRecordOperation($event)"
+  ></app-table>
+</div>
+
+<ng-template #addEditOrchestratorModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">
+      Orchestrator Mapping 
+    </h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="">
+        <form [formGroup]="form" (ngSubmit)="saveOrchestratorMapping()" class="p-3">
+          <formly-form
+            [form]="form"
+            [fields]="formFields"
+            [model]="formModel"
+            [options]="formOptions"
+          >
+          </formly-form>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="modal.close('Close click')"
+            >
+              Close
+            </button>
+
+            <button
+              type="submit"
+              class="btn btn-success mx-1"
+              [disabled]="!form.valid"
+            >
+              {{ isEditMode ? "Update" : "Submit" }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+
+<!-- No Records Message -->
+<ng-container *ngIf="dataSource.length === 0">
+  <div class="alert alert-warning text-center fs-5">No Record Found...</div>
+</ng-container>

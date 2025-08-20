@@ -1,0 +1,47 @@
+<!-- <p>ap-register works!</p> -->
+ <div class="row">
+    <div class="col-12">
+        <h1>AP Register</h1>
+    </div>
+</div>
+
+<div class="row my-2">
+    <div class="col-md-12 text-end">
+        <button class="btn btn-primary" (click)="openAddAP()">Add AP</button>
+    </div>
+</div>
+
+<div class="row">
+    <app-table [dataSize]="dataSize" [rowCheckbox]="enableCheckbox" [tableHeaders]="displayedColumns"  
+        [tableButtons]="tableButtons" [tableData]="dataSource" (rowSelectionEventEmit)="getSelectedRows($event)" 
+        (eventEmitPageRecord)="getTableData($event)" (eventEmitRecordOperation)="triggerRecordOperation($event)" >
+    </app-table>
+</div>
+
+<ng-template #content let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title">AP Register</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-12 col-md-12 col-lg-12 col-xxl-12">
+                <form [formGroup]="form" (ngSubmit)="APRegisterCRUD()" class="p-3">
+                    <formly-form
+                        [form]="form"
+                        [fields]="formFields"
+                        [model]="formModel"
+                        [options]="formOptions">
+                    </formly-form>
+                    <div class="modal-footer">
+                        <!-- [disabled]="!form.valid"-->
+                        <button *ngIf="!editMode" type="submit" class="btn btn-success mx-1" >Submit</button>
+                        <button *ngIf="editMode" type="submit" class="btn btn-success mx-1" >Update</button>
+                        <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
+                    </div>
+                </form>                                
+            </div>
+        </div>
+    </div>
+</ng-template>    
+

@@ -1,0 +1,217 @@
+<div *ngIf="_tableData.length > 0">
+  <div class="row mt-1 mb-1">
+    <div class="col-6 col-sm-6 col-md-4 col-lg-4 col-xl-4 position-relative">
+      <input
+        type="text"
+        class="form-control"
+        id="search"
+        [(ngModel)]="searchContact"
+        placeholder="Search"
+      />
+      <span
+        style="position: absolute; top: 15%; right: 5%; cursor: pointer"
+        *ngIf="searchContact.trim().length > 0"
+        (click)="searchContact = ''"
+      >
+        &#8855;
+      </span>
+    </div>
+    <div class="col-2 col-sm-2 col-md-2 col-lg-1 col-xl-1">
+      <select
+        id="pageLimit"
+        class="form-select"
+        [(ngModel)]="pageLimit"
+        (change)="getTotalgePages()"
+      >
+        <option disabled>Page Size</option>
+        <option *ngFor="let _pageSize of pageSize" [value]="_pageSize.value">
+          {{ _pageSize.title }}
+        </option>
+      </select>
+    </div>
+    <!-- <mat-form-field class="col-2 col-sm-2 col-md-2 col-lg-1 col-xl-1">
+            <mat-label>Page Size</mat-label>
+            <mat-select [(ngModel)]="pageLimit" (selectionChange)="getTotalgePages()">
+              <mat-option *ngFor="let _pageSize of pageSize" [value]="_pageSize.value">{{_pageSize.title}}</mat-option>
+            </mat-select>
+          </mat-form-field> -->
+
+    <div class="col-4 col-sm-4 col-md-3 col-lg-2 col-xl-2">
+      <!-- <mat-label>Columns</mat-label>
+            <mat-select multiple [(ngModel)]="tableColumns" (selectionChange)="toggleTableColumns()">
+              <mat-option *ngFor="let _tableHeaders of tableHeaders" [value]="_tableHeaders">{{_tableHeaders.title}}</mat-option>
+            </mat-select> -->
+
+      <!--  <select id="tableColumns" class="form-select" [(ngModel)]="tableColumns" (change)="toggleTableColumns()">
+              <option *ngFor="let _tableHeaders of tableHeaders" [value]="_tableHeaders">{{_tableHeaders.title}}</option>
+            </select> -->
+    </div>
+
+    <div
+      class="form-group col-12 col-md-3 col-sm-12 col-lg-5 col-xl-5 text-end text-nowrap float-end"
+    >
+      <button
+        class="btn btn-link pointer"
+        style="text-decoration: none"
+        (click)="jumpTuFirstPage()"
+        [disabled]="selectedPage == 1"
+      >
+        <i class="fa fa-angle-double-left" aria-hidden="true"></i>
+      </button>
+
+      <button
+        class="btn btn-link pointer"
+        style="text-decoration: none"
+        (click)="previousPage()"
+        [disabled]="selectedPage == 1"
+      >
+        <i class="fa fa-angle-left" aria-hidden="true"></i>
+      </button>
+      <strong
+        role="button"
+        [ngbPopover]="popContent"
+        #pageJumper="ngbPopover"
+        triggers="manual"
+        (click)="jumpedPage = undefined; pageJumper.open()"
+        >Page {{ selectedPage }} of {{ totalRecords }}
+      </strong>
+      <button
+        class="btn btn-link pointer"
+        style="text-decoration: none"
+        (click)="nextPage()"
+        [disabled]="selectedPage >= totalRecords"
+      >
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </button>
+      <button
+        class="btn btn-link pointer"
+        style="text-decoration: none"
+        (click)="jumpToLastPage()"
+        [disabled]="selectedPage >= totalRecords"
+      >
+        <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <ng-template #popContent>
+      <div (mousedown)="$event.stopPropagation()">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-1">
+          <label class="form-label">Go to page no....</label>
+          <input
+            type="number"
+            class="form-control"
+            min="1"
+            max="{{ totalRecords }}"
+            oninput="validity.valid||(value='');"
+            [(ngModel)]="jumpedPage"
+          />
+        </div>
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+          <button
+            type="button"
+            *ngIf="
+              jumpedPage != undefined && jumpedPage != null && jumpedPage != ''
+            "
+            class="btn btn-sm btn-outline-dark col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12"
+            (click)="JumpedToPage(jumpedPage); pageJumper.close()"
+          >
+            Jump
+          </button>
+          <button
+            type="button"
+            *ngIf="
+              jumpedPage == undefined || jumpedPage == null || jumpedPage == ''
+            "
+            class="btn btn-sm btn-outline-dark col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12"
+            (click)="pageJumper.close()"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+  <div class="row">
+    <!-- [style.height]="tableHeight" -->
+    <div class="table-responsive" style="overflow: auto">
+      <table class="table table-bordered table-striped text-center">
+        <thead>
+          <tr>
+            @if(enableCheckbox) {
+            <th
+              class="pb-2 pt-2 text-center text-nowrap pointer disable-text-selection"
+            >
+              <input
+                class="form-check-input"
+                type="checkbox"
+                [checked]="rowSeleted.length == tableData.length"
+                [indeterminate]="
+                  rowSeleted.length > 0 && rowSeleted.length != tableData.length
+                "
+                (change)="selectAllItem($event)"
+              />
+            </th>
+            }
+            <th
+              class="pb-2 pt-2 px-2 text-center text-nowrap pointer disable-text-selection"
+              *ngFor="let _headers of _tableHeaders; let i = index"
+              (click)="RecordOrderedBy(_headers, i)"
+            >
+              {{ _headers.title }}
+              <i
+                class="fa fa-sort-amount-asc px-2"
+                aria-hidden="true"
+                *ngIf="orderAsc && i == clickedIndex"
+              ></i>
+              <i
+                class="fa fa-sort-amount-desc px-2"
+                aria-hidden="true"
+                *ngIf="orderDesc && i == clickedIndex"
+              ></i>
+            </th>
+            <th
+              class="pb-2 pt-2 text-start text-nowrap pointer disable-text-selection"
+              *ngIf="_tableButtons && _tableButtons.length > 0"
+            >
+              Action
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let _data of paginatedData; let i = index">
+            @if(enableCheckbox) {
+            <td>
+              <input
+                class="form-check-input"
+                type="checkbox"
+                [checked]="checkRowExist(_data)"
+                (change)="selectItem($event, _data)"
+              />
+            </td>
+            }
+            <td
+              *ngFor="let _cell of _tableHeaders"
+              class="{{ setClassInInutPattern(_data[_cell['field']]) }}"
+            >
+              {{ _data[_cell["field"]] }}
+            </td>
+            <td
+              class="text-nowrap"
+              *ngIf="_tableButtons && _tableButtons.length > 0"
+            >
+              <button 
+                    *ngFor="let _btns of _tableButtons"
+                    class="btn btn-sm mx-1"
+                    [disabled]="isButtonDisabled(_btns.ft_param_field_vldtn, _data)"
+                    (click)="triggerRecordOpertaion(_btns.function, _data)"
+                    [ngClass]="_btns.btnColor ? _btns.btnColor : 'btn-warning'">
+                    <span [innerHTML]="_btns.lable"></span>
+                  </button>
+
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

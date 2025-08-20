@@ -1,0 +1,14 @@
+{
+    "baseUrl": "https://appapi.cnergeecloud.com/Api",
+    "apiUrl": "https://appapi.cnergeecloud.com/Api",
+    "imageUrl": "https://appapi.cnergeecloud.com/",
+    "rrdToolUrl": "https://appapi.cnergeecloud.com/api",
+    "torchUrl": "https://ugwconfig.cnergeecloud.com/api",
+    "googleMapApiKey": "AIzaSyC826-Oh4AlESeizHhxDuosB8mtABNBtPo",
+    "title": "Unigr8ways",
+    "site": "unigr8ways", 	 
+    "map": ""
+}
+
+
+
