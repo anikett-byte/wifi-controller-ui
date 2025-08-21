@@ -36,7 +36,7 @@ pipeline {
             steps {
                 sshagent(['server-ssh']) {
                     sh '''
-                    ssh -p 10922 aniket@10.80.80.20 '
+                    ssh -o StrictHostKeyChecking=no -p 10922 aniket@10.80.80.20 '
                         docker pull ${DOCKERHUB_USER}/${IMAGE_NAME}:${IMAGE_TAG} &&
                         docker stop wifi-ui || true &&
                         docker rm wifi-ui || true &&
