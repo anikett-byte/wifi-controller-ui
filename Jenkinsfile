@@ -36,11 +36,11 @@ pipeline {
             steps {
                 sshagent(['server-ssh']) {
                     sh '''
-                    ssh user@10.80.80.20 '
+                    ssh -p 10922 aniket@10.80.80.20 '
                         docker pull ${DOCKERHUB_USER}/${IMAGE_NAME}:${IMAGE_TAG} &&
                         docker stop wifi-ui || true &&
                         docker rm wifi-ui || true &&
-                        docker run -d --name wifi-ui -p 8080:80 ${DOCKERHUB_USER}/${IMAGE_NAME}:${IMAGE_TAG}
+                        docker run -d --name wifi-ui -p 8082:80 ${DOCKERHUB_USER}/${IMAGE_NAME}:${IMAGE_TAG}
                     '
                     '''
                 }
