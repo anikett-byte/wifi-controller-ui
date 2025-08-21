@@ -1,176 +1,138 @@
 <div class="pageheader">
   <h1>Subscriber Master</h1>
   <div>
-    <button mat-raised-button color="primary" class="float-right"
-      (click)="openSubscriberDetailsModal(addEditSubscribeModal)">
+    <button
+      mat-raised-button
+      color="primary"
+      class="float-right"
+      (click)="openSubscriberDetailsModal(addEditSubscribeModal)"
+    >
       <mat-icon>add</mat-icon>
       Add Subscriber
     </button>
   </div>
 </div>
 
-<!-- <ng-template #addEditSubscribeModal let-modal>
+<!-- No Records Message -->
+@if (dataSource.length === 0) {
+  <div class="alert alert-warning text-center fs-5">
+    No Record Found...
+  </div>
+}
+
+<!-- Table -->
+<div class="row">
+  <app-table
+    [dataSize]="dataSize"
+    [tableHeaders]="displayedColumns"
+    [tableButtons]="tableButtons"
+    [tableData]="dataSource"
+    (eventEmitRecordOperation)="triggerRecordOperation($event)"
+  ></app-table>
+</div>
+
+<!-- ---------------- Subscriber Add/Edit Modal ---------------- -->
+<ng-template #addEditSubscribeModal let-modal>
   <div class="modal-header">
     <h4 class="modal-title">Subscriber Master</h4>
     <button
       type="button"
       class="btn-close"
-      aria-label="Close"
       (click)="modal.dismiss('Cross click')"
     ></button>
   </div>
-  <div class="modal-body">
-    <div class="row">
-      <div class="">
-        <form
-          [formGroup]="form"
-          (ngSubmit)="saveSubscribeDetails()"
-          class="p-3"
-        >
-          <formly-form
-            [form]="form"
-            [fields]="formFields"
-            [model]="formModel"
-            [options]="formOptions"
-          >
-          </formly-form>
 
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              (click)="modal.close('Close click')"
-            >
-              Close
-            </button>
-
-            <button
-              type="submit"
-              class="btn btn-success mx-1"
-              [disabled]="!form.valid"
-            >
-              {{ isEditMode ? "Update" : "Submit" }}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</ng-template> -->
-
-<!-- No Records Message -->
-@if (dataSource.length === 0) {
-<div class="alert alert-warning text-center fs-5">No Record Found...</div>
-
-}
-
-<!-- ------------------------------------ Content Group Enable/Disable ------------------------------------------- -->
-
-
-<div class="row">
-  <app-table [dataSize]="dataSize" [tableHeaders]="displayedColumns" [tableButtons]="tableButtons"
-    [tableData]="dataSource" (eventEmitRecordOperation)="triggerRecordOperation($event)"></app-table>
-</div>
-
-
-
-<ng-template #addEditSubscribeModal let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title">Subscriber Master</h4>
-    <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
-  </div>
-
-  <form [formGroup]="form" (ngSubmit)="saveSubscribeDetails()" class="row g-3">
+  <!-- ✅ Form wraps modal-body & footer -->
+  <form [formGroup]="form" (ngSubmit)="saveSubscribeDetails()">
     <div class="modal-body">
-
-      <!-- User Details -->
-      <div class="col-md-3">
+      <div class="row g-3">
+        <!-- User Type -->
         <div class="col-md-6">
           <label class="d-block">User Type <span class="text-danger">*</span></label>
 
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" formControlName="usertype" value="PPPoE" id="utPPPoE" />
-            <label class="form-check-label" for="utPPPoE">PPPoE</label>
-          </div>
-
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" formControlName="usertype" value="IPoE" id="utIPoE" />
-            <label class="form-check-label" for="utIPoE">IPoE</label>
-          </div>
-
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" formControlName="usertype" value="MAC" id="utMAC" />
-            <label class="form-check-label" for="utMAC">MAC</label>
-          </div>
-
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" formControlName="usertype" value="Hotspot" id="utHotspot" />
-            <label class="form-check-label" for="utHotspot">Hotspot</label>
-          </div>
-
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" formControlName="usertype" value="BYOD" id="utBYOD" />
-            <label class="form-check-label" for="utBYOD">BYOD</label>
+          <div class="form-check form-check-inline" *ngFor="let type of ['PPPoE','IPoE','MAC','Hotspot','BYOD']; let i=index">
+            <input
+              class="form-check-input"
+              type="radio"
+              formControlName="usertype"
+              [value]="type"
+              [id]="'ut' + type"
+            />
+            <label class="form-check-label" [for]="'ut' + type">{{ type }}</label>
           </div>
 
           @if (form.controls['usertype'].errors?.['required'] && form.controls['usertype'].touched) {
-          <div class="text-danger mt-1 small">
-            User Type is required
-          </div>
+            <div class="text-danger mt-1 small">User Type is required</div>
           }
         </div>
 
-
+        <!-- Username -->
         <div class="col-md-3">
           <label>Username</label>
           <input type="text" class="form-control" formControlName="username" />
         </div>
 
+        <!-- Password -->
         <div class="col-md-3">
           <label>Password</label>
           <input type="password" class="form-control" formControlName="spassword" />
         </div>
 
+        <!-- Confirm Password -->
         <div class="col-md-3">
           <label>Confirm Password</label>
           <input type="password" class="form-control" formControlName="confirmpassword" />
         </div>
 
-
+        <!-- IP Address -->
         <div class="col-md-3">
           <label>
             IP Address
             @if (form.get('usertype')?.value === 'IPoE') {
-            <span class="text-danger">*</span>
+              <span class="text-danger">*</span>
             }
           </label>
           <input type="text" formControlName="ipaddress" class="form-control" />
           @if(form.get('usertype')?.value === 'IPoE'
-          && form.get('ipaddress')?.touched
-          && form.get('ipaddress')?.hasError('required')) {
-          <div class="text-danger">
-            IP Address is required for IPOE.
-          </div>
+              && form.get('ipaddress')?.touched
+              && form.get('ipaddress')?.hasError('required')) {
+            <div class="text-danger">IP Address is required for IPOE.</div>
           }
         </div>
 
-        <!-- Dynamic MAC Addresses -->
+        <!-- MAC Address -->
         <div class="col-md-3">
           <label>MAC Address (Default)</label>
           <input type="text" class="form-control" formControlName="macaddress_default" />
         </div>
 
-        <div formArrayName="macaddresses" class="row">
-          <div *ngFor="let ctrl of macaddresses.controls; let i=index" class="col-md-3 d-flex align-items-center mt-2">
-            <input [formControlName]="i" class="form-control me-2" placeholder="MAC Address {{i+2}}" />
-            <button type="button" class="btn btn-danger btn-sm" (click)="removeMacAddress(i)">
+        <!-- Dynamic MAC Addresses -->
+        <div formArrayName="macaddresses">
+          <div
+            *ngFor="let ctrl of macaddresses.controls; let i=index"
+            class="col-md-3 d-flex align-items-center mt-2"
+          >
+            <input
+              [formControlName]="i"
+              class="form-control me-2"
+              placeholder="MAC Address {{i+2}}"
+            />
+            <button
+              type="button"
+              class="btn btn-danger btn-sm"
+              (click)="removeMacAddress(i)"
+            >
               <i class="fa fa-trash"></i>
             </button>
           </div>
         </div>
 
-        <div class="col-md-12 mt-2">
-          <button type="button" class="btn btn-primary btn-sm" (click)="addMacAddress()">
+        <div class="col-12 mt-2">
+          <button
+            type="button"
+            class="btn btn-primary btn-sm"
+            (click)="addMacAddress()"
+          >
             + Add MAC Address
           </button>
         </div>
@@ -227,14 +189,16 @@
           <label>Package Expiry</label>
           <input type="date" class="form-control" formControlName="packageexpiry" />
         </div>
-
-        <!-- Footer -->
-        <div class="modal-footer mt-3">
-          <button type="button" class="btn btn-secondary" (click)="modal.close()">Close</button>
-          <button type="submit" class="btn btn-success mx-1" [disabled]="form.invalid">
-            {{ isEditMode ? "Update" : "Submit" }}
-          </button>
-        </div>
       </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.close()">Close</button>
+      <button type="submit" class="btn btn-success mx-1" [disabled]="form.invalid">
+        {{ isEditMode ? "Update" : "Submit" }}
+      </button>
+    </div>
   </form>
 </ng-template>
+
