@@ -11,7 +11,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/your-repo/wifi-controller-ui.git'
+                    url: 'https://github.com/anikett-byte/wifi-controller-ui.git'
             }
         }
 
