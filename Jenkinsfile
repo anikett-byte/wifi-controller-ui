@@ -4,7 +4,7 @@ pipeline {
     environment {
         IMAGE_NAME = "wifi-controller-ui"
         IMAGE_TAG = "latest"
-        DOCKERHUB_USER = "your-dockerhub-username"
+        DOCKERHUB_USER = "anikettevare"
     }
 
     stages {
